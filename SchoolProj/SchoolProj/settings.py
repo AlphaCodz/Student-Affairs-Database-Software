@@ -131,6 +131,14 @@ MESSAGE_TAGS = {
     # 50: "critical",
 }
 
+CORS_ALLOWED_ORIGINS = [
+    "https://student-affairs-software-production.up.railway.app",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://student-affairs-software-production.up.railway.app",
+]
+
 CORS_ALLOW_METHODS = [
     "DELETE",
     "GET",
