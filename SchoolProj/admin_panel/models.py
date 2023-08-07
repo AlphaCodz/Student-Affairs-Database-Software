@@ -62,6 +62,7 @@ class Students(AbstractUser):
     level = models.CharField(choices=LEVEL, max_length=4)
     status = models.CharField(choices=STATUS, max_length=7)
     date_registered = models.DateField(auto_now_add=True)
+    passport = models.FileField(upload_to="student_password/", null=True)
     
     objects = CustomUserManager()
     
