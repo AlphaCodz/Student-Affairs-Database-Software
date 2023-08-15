@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, reverse
-from .models import Students
+from .models import Students, ComplaintForm
 from django.db.models import Count, Q
 from django.views import View
 from django.contrib import messages
@@ -11,6 +11,8 @@ class HomePage(View):
 
     def get(self, request, *args, **kwargs):
         students = Students.objects.all().exclude(department='')
+        complaints = ComplaintForm.objects.all()
+        
 
         counts = students.aggregate(
             total_count=Count('pk'),
@@ -25,6 +27,7 @@ class HomePage(View):
             "final_year_students": counts['final_year_students'],
             "year_two_students": counts['year_two_students'],
             "freshers": counts['freshers_count'],
+            "complaint": complaints,
         }
         return render(request, self.template_name, context)
     
@@ -34,6 +37,9 @@ class StudentForms(View):
     def get(self, request, *args, **kwargs):
         print("IN GET ")
         return render(request, "forms.html")
+    
+    def check_is_digit(self, request, matric_number):
+        return matric_number.isdigit()
     
     def check_matric_number(self, request, matric_number):
         pattern = r'^[a-zA-Z\d/]+$'
@@ -57,6 +63,9 @@ class StudentForms(View):
         if not self.check_matric_number(request, matric_number):
             messages.error(request, "Invalid Matric Number")
             return HttpResponseRedirect(reverse("admin_panel:form"))
+        if not self.check_is_digit(request, matric_number):
+            messages.error(request, "Invalid Matric Number")
+            return HttpResponseRedirect(reverse("admin_panel:form"))
         
         student = Students.objects.create(first_name=first_name, 
                                           last_name=last_name, 
@@ -78,3 +87,32 @@ def forms_page(request):
         "departments": departments
     }
     return render(request, "forms.html", context=context)
+
+
+class StudentComplaintForm(View):
+    template_name = "biodata.html"
+    
+    def get(self, request):
+        students = Students.objects.all().values(
+           "id", "first_name", "last_name", "email", "matric_number"
+        )
+        
+        context = {
+            "students": students
+        }
+        
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
+        student = request.POST.get("student")
+        title = request.POST.get("title")
+        issue = request.POST.get("issue")
+        
+
+        complaintform = ComplaintForm.objects.create(
+            student=student,  # Use the student instance directly
+            title=title,
+            issue=issue
+        )
+        messages.success(request, f"{complaintform.title} has been submitted. Student Affairs will send a feedback soon!")
+        return HttpResponseRedirect(reverse("admin_panel:homepage"))

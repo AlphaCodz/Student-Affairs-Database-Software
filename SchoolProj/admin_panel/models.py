@@ -71,3 +71,12 @@ class Students(AbstractUser):
     
     def __str__(self):
         return self.first_name
+    
+class ComplaintForm(models.Model):
+    student = models.CharField(max_length=200)
+    title = models.CharField(max_length=250)
+    issue = models.TextField()
+    
+    def __str__(self):
+            return self.title
+        

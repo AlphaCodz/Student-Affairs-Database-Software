@@ -11,6 +11,7 @@ environ.Env().read_env()
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+# STATICFILES_DIRS = [BASE_DIR / "static"]
 
 
 

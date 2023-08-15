@@ -1,0 +1,91 @@
+{% extends "headers/header.html" %}
+{% load static %}
+
+{% block homepage %}
+  <body>
+    <!-- include navigation bar to screen -->
+    {% include "headers/nav.html" %}
+
+  
+        <main class="h-full pb-16 overflow-y-auto">
+          <div class="container px-6 mx-auto grid">
+            <h2
+              class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200"
+            >
+              Forms
+            </h2>
+            <!-- CTA -->
+
+            <!-- General elements -->
+            <h4
+              class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300"
+            >
+              Student Complaint Form
+            </h4>
+            {% include "alerts.html" %}
+            <form method="POST">
+              {% csrf_token %}
+
+              <label class="block mt-4 text-sm">
+                <span class="text-gray-700 dark:text-gray-400">
+                  Students
+                </span>
+                
+                
+                <select
+                  class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                  name="student"
+                  >
+                  {% for student in students %}
+                <option value="{{ student.first_name }} {{ student.last_name }}">{{student.first_name}} {{student.last_name}}</option>
+                    {% endfor %}
+                </select>
+              </label>
+            <div
+              class="px-5 py-3 mb-9 bg-white rounded-lg shadow-md dark:bg-gray-800"
+            >
+              <label class="block text-sm">
+                <span class="text-gray-700 dark:text-gray-400"></span>
+              
+              </label>
+              
+              <label class="block text-sm">
+                <span class="text-gray-700 dark:text-gray-400">Title</span>
+                <input
+                  class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                  placeholder="e.g Unlawful punishment by lecturer"
+                  name="title"
+                />
+              </label>
+
+              <label class="block text-sm">
+                <span class="text-gray-700 dark:text-gray-400">Issue</span>
+                <input
+                  class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                  placeholder="What's the problem?"
+                  name="issue"
+                />
+              </label>
+
+
+              <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Submit</button>
+              
+
+              
+            </div>
+
+            <!-- Validation inputs -->
+            
+          </div>
+</form>        
+        </main>
+      
+      </div>
+    </div>
+
+  </body>
+    
+  {% endblock homepage %}
+
+</html>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
