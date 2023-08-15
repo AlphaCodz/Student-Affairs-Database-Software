@@ -60,10 +60,14 @@ class StudentForms(View):
         level = request.POST.get("level")
         status = request.POST.get("status")
         
+        if len(matric_number) < 15:
+            messages.error(request, "Invalid Matric Number")
+            return HttpResponseRedirect(reverse("admin_panel:form"))
+        
         if not self.check_matric_number(request, matric_number):
             messages.error(request, "Invalid Matric Number")
             return HttpResponseRedirect(reverse("admin_panel:form"))
-        if not self.check_is_digit(request, matric_number):
+        if self.check_is_digit(request, matric_number):
             messages.error(request, "Invalid Matric Number")
             return HttpResponseRedirect(reverse("admin_panel:form"))
         
